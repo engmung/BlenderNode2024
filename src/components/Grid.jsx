@@ -5,8 +5,8 @@ import CenterCell from './CenterCell';
 
 const GridContainer = styled.div`
   width: 100%;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: 100%;
+  height: calc(var(--vh, 1vh) * 100);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,12 +25,12 @@ const getRandomGap = () => {
 const GridWrapper = styled.div`
   display: grid;
   gap: ${getRandomGap()}px;
-  background: white;
+  background: red;
   aspect-ratio: 2/1;
-  width: min(90vw, 180vh);
+  width: min(90vw, calc(var(--vh, 1vh) * 180));
   
   @media (max-width: 768px) {
-    width: min(95vw, 190vh);
+    width: min(95vw, calc(var(--vh, 1vh) * 190));
     aspect-ratio: 1/2;
   }
   

@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GridCell from './GridCell';
-import GridLines from './GridLines';
 import CenterCell from './CenterCell';
 
 const GridContainer = styled.div`
-  position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: black;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
-const GridInner = styled.div`
+const GridWrapper = styled.div`
   display: grid;
+  gap: 1px;
+  background: #333;
+  aspect-ratio: 2/1;
+  width: min(90vw, 180vh);
+  
+  @media (max-width: 768px) {
+    width: min(95vw, 190vh);
+    aspect-ratio: 1/2;
+  }
+  
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  width: min(calc(100vh * 2), 100vw);
-  height: min(calc(100vw / 2), 100vh);
-  position: relative;
   
   @media (max-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(8, 1fr);
-    width: min(100vw, calc(100vh / 2));
-    height: min(calc(100vw * 2), 100vh);
   }
 `;
 
@@ -263,7 +271,7 @@ const Grid = ({
 
   return (
     <GridContainer>
-      <GridInner>
+      <GridWrapper>
         {Array.from({ length: 32 }, (_, i) => {
           const isFlipped = flippedCells.has(i);
           const imageNum = getImageNumber(i);
@@ -297,8 +305,8 @@ const Grid = ({
             />
           );
         })}
-      </GridInner>
-      <GridLines />
+      </GridWrapper>
+   
     </GridContainer>
   );
 };

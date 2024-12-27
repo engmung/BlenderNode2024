@@ -30,12 +30,32 @@ const GridInner = styled.div`
   }
 `;
 
-const calculateDistance = (index1, index2) => {
-  const row1 = Math.floor(index1 / 8);
-  const col1 = index1 % 8;
-  const row2 = Math.floor(index2 / 8);
-  const col2 = index2 % 8;
-  return Math.sqrt(Math.pow(row1 - row2, 2) + Math.pow(col1 - col2, 2));
+const calculateDistance = (from, to) => {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  
+  // 모바일 레이아웃 (4x8)
+  if (isMobile) {
+    const fromRow = Math.floor(from / 4);
+    const fromCol = from % 4;
+    const toRow = Math.floor(to / 4);
+    const toCol = to % 4;
+    
+    return Math.sqrt(
+      Math.pow(toRow - fromRow, 2) + 
+      Math.pow(toCol - fromCol, 2)
+    );
+  }
+  
+  // 데스크톱 레이아웃 (8x4)
+  const fromRow = Math.floor(from / 8);
+  const fromCol = from % 8;
+  const toRow = Math.floor(to / 8);
+  const toCol = to % 8;
+  
+  return Math.sqrt(
+    Math.pow(toRow - fromRow, 2) + 
+    Math.pow(toCol - fromCol, 2)
+  );
 };
 
 const Grid = ({ 
@@ -104,7 +124,7 @@ const Grid = ({
     const sortedCells = Array.from(distances.entries())
       .sort((a, b) => a[1] - b[1]);
 
-    sortedCells.forEach(([cellIndex, distance]) => {
+    sortedCells.forEach(([cellIndex, distance], index) => {
       setTimeout(() => {
         setFlippedCells(prev => {
           const updated = new Set(prev);
@@ -115,13 +135,13 @@ const Grid = ({
           }
           return updated;
         });
-      }, 0);
+      }, distance * 100); // 거리에 비례하여 딜레이 적용
     });
 
     setTimeout(() => {
       setIsExpanding(false);
       setIsAllFlipped(!isReversing);
-    }, 600);
+    }, maxDistance * 100 + 100);
   };
 
   const handleCellClick = (index) => {
@@ -225,8 +245,15 @@ const Grid = ({
     return { number: '' };
   };
 
-  const getImageNumber = (i) => {
-    return imagePositions[i];
+  const getImageNumber = (index) => {
+    if (isCenterCell(index)) return null;
+    return imagePositions[index];
+  };
+
+  const getImageUrl = (index) => {
+    const imageNumber = getImageNumber(index);
+    if (!imageNumber) return null;
+    return `/images/scene${imageNumber}.webp`;
   };
 
   const getDelay = (index) => {
@@ -240,6 +267,7 @@ const Grid = ({
         {Array.from({ length: 32 }, (_, i) => {
           const isFlipped = flippedCells.has(i);
           const imageNum = getImageNumber(i);
+          const imageUrl = getImageUrl(i);
           
           if (isCenterCell(i)) {
             const content = getCenterCellContent(i);
@@ -261,6 +289,7 @@ const Grid = ({
               index={i}
               isFlipped={isFlipped}
               imageNum={imageNum}
+              imageUrl={imageUrl}
               onClick={() => handleCellClick(i)}
               delay={getDelay(i)}
               frontColor={frontColor}

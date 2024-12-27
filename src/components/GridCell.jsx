@@ -27,6 +27,7 @@ const CellFront = styled(CellContent)`
 
 const CellBack = styled(CellContent)`
   transform: rotateY(180deg);
+  background: #1a1a1a;
   overflow: hidden;
   
   img {
@@ -65,11 +66,13 @@ const GridCell = ({
     <CellWrapper $isFlipped={isFlipped} onClick={onClick} $delay={delay}>
       <CellFront $randomizedColor={randomizedColor} />
       <CellBack>
-        <img 
-          src={`/src/assets/images/scene${imageNum}.webp`} 
-          alt={`Scene ${imageNum}`}
-          loading="lazy"
-        />
+        {imageNum && (
+          <img 
+            src={`/images/scene${imageNum}.webp`}
+            alt={`Scene ${imageNum}`}
+            loading="lazy"
+          />
+        )}
       </CellBack>
     </CellWrapper>
   );

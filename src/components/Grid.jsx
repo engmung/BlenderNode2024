@@ -5,26 +5,22 @@ import CenterCell from './CenterCell';
 
 const GridContainer = styled.div`
   width: 100%;
-  height: 100%;
-  height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
   display: flex;
   justify-content: center;
   align-items: center;
   background: black;
-  padding: 2rem 0;
+  padding: 1rem;
   
   @media (max-width: 768px) {
-    padding: 4rem 0;
+    padding: 2rem 1rem;
   }
 `;
 
-const getRandomGap = () => {
-  return (Math.random() * 0.3 + 0.1).toFixed(2); // 0.1 ~ 0.3 사이의 랜덤값
-};
 
 const GridWrapper = styled.div`
   display: grid;
-  gap: ${getRandomGap()}px;
+  gap: 0.05px;
   background: red;
   aspect-ratio: 2/1;
   width: min(90vw, calc(var(--vh, 1vh) * 180));

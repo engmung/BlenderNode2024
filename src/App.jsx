@@ -15,26 +15,42 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    overflow: hidden;
-    touch-action: none;
     height: 100%;
+    
+    @media (min-width: 769px) {
+      overflow: hidden;
+    }
   }
 
   body {
     width: 100%;
     height: 100%;
     background: black;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    
+    @media (min-width: 769px) {
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    
+    @media (max-width: 768px) {
+      min-height: calc(var(--vh, 1vh) * 100);
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
   #root {
     width: 100%;
     height: 100%;
+    
+    @media (max-width: 768px) {
+      min-height: calc(var(--vh, 1vh) * 100);
+    }
   }
 `;
 

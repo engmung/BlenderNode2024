@@ -5,22 +5,27 @@ import CenterCell from './CenterCell';
 
 const GridContainer = styled.div`
   width: 100%;
-  height: 100vh;
-  height: 100svh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   justify-content: center;
   align-items: center;
   background: black;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
+  padding: 2rem 0;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 0;
+  }
 `;
+
+const getRandomGap = () => {
+  return (Math.random() * 0.3 + 0.1).toFixed(2); // 0.1 ~ 0.3 사이의 랜덤값
+};
 
 const GridWrapper = styled.div`
   display: grid;
-  gap: 1px;
-  background: #333;
+  gap: ${getRandomGap()}px;
+  background: white;
   aspect-ratio: 2/1;
   width: min(90vw, 180vh);
   
@@ -67,7 +72,7 @@ const calculateDistance = (from, to) => {
 };
 
 const Grid = ({ 
-  frontColor = '#1a1a1a', 
+  frontColor = '#000000', 
   randomRange = 5
 }) => {
   const [flippedCells, setFlippedCells] = useState(new Set());

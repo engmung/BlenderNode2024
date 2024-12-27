@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
+const VIDEO_SCENES = new Set([2, 8, 14, 21, 23, 25, 26, 28]);
+
 const CellWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  cursor: pointer;
   transform-style: preserve-3d;
   perspective: 1000px;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -18,7 +19,6 @@ const CellContent = styled.div`
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  transform-style: preserve-3d;
 `;
 
 const CellFront = styled(CellContent)`
@@ -30,11 +30,10 @@ const CellBack = styled(CellContent)`
   background: #1a1a1a;
   overflow: hidden;
   
-  img {
+  img, video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 `;
 
@@ -62,16 +61,28 @@ const GridCell = ({
     return adjustBrightness(frontColor, randomAmount);
   }, [frontColor, randomRange, index]);
 
+  const isVideoCell = VIDEO_SCENES.has(imageNum);
+
   return (
     <CellWrapper $isFlipped={isFlipped} onClick={onClick} $delay={delay}>
       <CellFront $randomizedColor={randomizedColor} />
       <CellBack>
-        {imageNum && (
-          <img 
-            src={`/images/scene${imageNum}.webp`}
-            alt={`Scene ${imageNum}`}
-            loading="lazy"
+        {isVideoCell ? (
+          <video 
+            autoPlay
+            loop
+            muted
+            playsInline
+            src={`/videos/scene${imageNum}.webm`}
           />
+        ) : (
+          imageNum && (
+            <img 
+              src={`/images/scene${imageNum}.webp`}
+              alt={`Scene ${imageNum}`}
+              loading="lazy"
+            />
+          )
         )}
       </CellBack>
     </CellWrapper>
